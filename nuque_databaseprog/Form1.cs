@@ -115,7 +115,7 @@ namespace databaseprog
             string year = cbYEAR.Text;
 
 
-            if (IsAnyFieldEmpty())
+            if (IsAnyFieldEmpty(false))
             {
                 MessageBox.Show("Missing information", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnSAVE.Enabled = false;
@@ -264,7 +264,7 @@ namespace databaseprog
             string course = cbCOURSE.Text;
             string year = cbYEAR.Text;
 
-            if (IsAnyFieldEmpty())
+            if (IsAnyFieldEmpty(false))
             {
                 MessageBox.Show("Missing information", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 btnSAVE.Enabled = true;
@@ -325,11 +325,26 @@ namespace databaseprog
                 mySqlConnection.Dispose();
 
             }
+        }
 
+        private bool IsAnyFieldEmpty(bool includeMiddleName = true) // Added parameter
+        {
+            if (string.IsNullOrEmpty(txtID.Text) ||
+                string.IsNullOrEmpty(txtLN.Text) ||
+                string.IsNullOrEmpty(txtFN.Text) ||
+                string.IsNullOrEmpty(txtADDRESS.Text) ||
+                string.IsNullOrEmpty(cbCOURSE.Text) ||
+                string.IsNullOrEmpty(cbYEAR.Text))
+            {
+                return true; // Return true if any of these are empty
+            }
 
+            if (includeMiddleName && string.IsNullOrEmpty(txtMN.Text))
+            {
+                return true;
+            }
 
-
-
+            return false; // Return false if all required fields are not empty
         }
 
         private void loadStudents(System.Windows.Forms.ListView lvList)
